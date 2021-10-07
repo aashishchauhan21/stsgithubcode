@@ -1,1 +1,57 @@
-hi
+# Banking Application REST API using Spring Boot
+Banking Application REST API to create Account and tranfer amount using Spring Boot and Spring Data JPA
+
+## Instructions:
+- You can use below URI's to construct API requests using an app like Postman. Use Postman or similar app to construct and send requests as mentined below.
+
+POST
+/customer
+{
+    "acctNo": "101",
+    "acctType": "Saving",
+    "custName": "Rahul Gupta",
+    "city": "sre",
+    "state": "up",
+    "country": "india",
+    "mobno": "9540295000",
+	  "balance": 1000
+}
+
+POST
+/customer
+{
+    "acctNo": "102",
+    "acctType": "Saving",
+    "custName": "Chetan Sharma",
+    "city": "sre",
+    "state": "up",
+    "country": "india",
+    "mobno": "9540293456"
+	  "balance": 500
+}
+
+GET
+/customer/{acctID}
+/account/{acctID}/balance
+
+PUT
+/account/{acctID}/deposit/{amount}
+
+PUT
+/account/transfer
+{
+    "acctNo": "101",
+    "destAcctNo": "102",
+    "amount": "5000"
+}
+
+## Steps to run the project and test API:
+- In order to run the API, Java should be installed.
+- Download the project and import as maven project in any IDE e.g. STS, Eclipse
+- Run the project as Spring Boot Project
+- Download link for Postman -> https://www.getpostman.com/downloads/
+- Open Postman and send requests as per URL mentioned above.
+
+##### NOTE: This is a Maven project. So there is no need to download external .jars
+
+### Tech Stack: Spring Boot, Spring Data JPA, Java, Maven, Spring Tool Suite, Postman
