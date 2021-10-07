@@ -4,7 +4,7 @@ import com.bankapp.api.model.CustomerAccount;
 
 public interface CustomerAccountService {
 	
-	public void createCustomerAccount(CustomerAccount customerAccount);
+	public CustomerAccount createCustomerAccount(CustomerAccount customerAccount);
 
 	public CustomerAccount getCustomerAccountInfo(String acctNo);
 	

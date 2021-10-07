@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.bankapp.api.model.CustomerAccount;
 
 @Repository
-public interface CustomerAccountDAO extends CrudRepository<CustomerAccount, String>, 
-JpaRepository<CustomerAccount, String> {
-	
+public interface CustomerAccountDAO
+		extends CrudRepository<CustomerAccount, String>, JpaRepository<CustomerAccount, String> {
+
 	@Query("select balance from CustomerAccount where acctNo = ?1")
 	public double findBalanceByAcctNo(String acctNo);
 

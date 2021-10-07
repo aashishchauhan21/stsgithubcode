@@ -51,9 +51,9 @@ public class CustomerAccountController {
 			logger.info("Receive request to create new customer account");
 			response = customerAccountService.getCustomerAccountInfo(customerAccount.getAcctNo());
 			if (response == null) {
-				customerAccountService.createCustomerAccount(customerAccount);
+				CustomerAccount cusAcctresponse = customerAccountService.createCustomerAccount(customerAccount);
 				ErrorDetails errorDetails = new ErrorDetails(new Date(),
-						"Customer account created successfully with account number : " + customerAccount.getAcctNo(), "");
+						"Customer account created successfully", "");
 				return new ResponseEntity<>(errorDetails, HttpStatus.OK);
 			} else {
 				throw new DublicateAccountNumberException(
