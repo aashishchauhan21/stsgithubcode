@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.bankapp.api.Entity.CustomerAccount;
 import com.bankapp.api.exception.ErrorDetails;
-import com.bankapp.api.model.CustomerAccount;
 import com.bankapp.api.model.TransferAmount;
 import com.bankapp.api.service.CustomerAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;

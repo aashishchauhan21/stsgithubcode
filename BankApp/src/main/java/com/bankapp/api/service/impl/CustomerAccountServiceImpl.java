@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bankapp.api.Entity.AccountTransaction;
+import com.bankapp.api.Entity.CustomerAccount;
 import com.bankapp.api.dao.AccountTransactionDAO;
 import com.bankapp.api.dao.CustomerAccountDAO;
-import com.bankapp.api.model.AccountTransaction;
-import com.bankapp.api.model.CustomerAccount;
 import com.bankapp.api.model.TransactionType;
 import com.bankapp.api.service.CustomerAccountService;
 
@@ -30,9 +30,9 @@ public class CustomerAccountServiceImpl implements CustomerAccountService{
 	@Override
 	public CustomerAccount createCustomerAccount(CustomerAccount customerAccount) {
 		logger.info("Entering in createCustomerAccount :", System.currentTimeMillis());	
-		CustomerAccount savedCustomer = null;
-		savedCustomer = customerAccountDAO.save(customerAccount);
-		return savedCustomer;
+		//CustomerAccount savedCustomer = null;
+		return customerAccountDAO.save(customerAccount);
+		//return savedCustomer;
 	}
 
 	@Override

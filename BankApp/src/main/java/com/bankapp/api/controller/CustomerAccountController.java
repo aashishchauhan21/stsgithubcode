@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bankapp.api.Entity.CustomerAccount;
 import com.bankapp.api.exception.AmountNotTransferException;
 import com.bankapp.api.exception.DublicateAccountNumberException;
 import com.bankapp.api.exception.ErrorDetails;
 import com.bankapp.api.exception.InvalidAmountException;
 import com.bankapp.api.exception.ResourceNotFoundException;
-import com.bankapp.api.model.CustomerAccount;
 import com.bankapp.api.model.TransferAmount;
 import com.bankapp.api.service.CustomerAccountService;
 import com.bankapp.api.service.NotificationService;
@@ -41,15 +41,13 @@ public class CustomerAccountController {
 		@GetMapping("/health")
 		public String getHealthCheck() {
 			return "OK";
-		}
-
-		CustomerAccount response = null;
+		}		
 
 		// method to create new customer account
 		@PostMapping("/customer")
 		public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerAccount customerAccount) {
 			logger.info("Receive request to create new customer account");
-			response = customerAccountService.getCustomerAccountInfo(customerAccount.getAcctNo());
+			CustomerAccount response = customerAccountService.getCustomerAccountInfo(customerAccount.getAcctNo());
 			if (response == null) {
 				CustomerAccount cusAcctresponse = customerAccountService.createCustomerAccount(customerAccount);
 				ErrorDetails errorDetails = new ErrorDetails(new Date(),
@@ -65,7 +63,7 @@ public class CustomerAccountController {
 		@GetMapping("/customer/{acctNo}")
 		public CustomerAccount getCustomerInfo(@PathVariable String acctNo) {
 			logger.info("Receive request to get customer account info");
-			response = customerAccountService.getCustomerAccountInfo(acctNo);
+			CustomerAccount response = customerAccountService.getCustomerAccountInfo(acctNo);
 			if (response == null)
 				throw new ResourceNotFoundException("Customer account number does not exist : " + acctNo);
 			return response;
@@ -106,25 +104,37 @@ public class CustomerAccountController {
 			return updatedBalance;
 		}
 
-		// transfer Amount from one account to another account
+		//to transfer Amount from one account to another account
 		@PutMapping("/account/transfer")
 		public ResponseEntity<Object> transferAmount(@Valid @RequestBody TransferAmount transferAmount) {
 			logger.info("Receive request to tranfer amount");
-
+			if(validateTransferAmount(transferAmount)) {
+				CustomerAccount customerAccount = customerAccountService.getCustomerAccountInfo(transferAmount.getAcctNo());
+				CustomerAccount destCustomerAccount = customerAccountService.getCustomerAccountInfo(transferAmount.getDestAcctNo());
+				customerAccountService.transferAmount(transferAmount.getAcctNo(), transferAmount.getDestAcctNo(),
+						transferAmount.getAmount());
+				notificationService.sendNotificationToCustomer(customerAccount, transferAmount.getAmount());
+				notificationService.sendNotificationToCustomer(destCustomerAccount, transferAmount.getAmount());
+				ErrorDetails errorDetails = new ErrorDetails(new Date(), "Amount transferred successfully", "");
+				return new ResponseEntity<>(errorDetails, HttpStatus.OK);
+			} else {
+				ErrorDetails errorDetails = new ErrorDetails(new Date(), "Some Error Occurred", "");
+				return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+							
+		}
+		
+		private boolean validateTransferAmount(TransferAmount transferAmount) {
+			boolean response = false;
 			CustomerAccount customerAccount = customerAccountService.getCustomerAccountInfo(transferAmount.getAcctNo());
 			if (customerAccount != null) {
 				double initBalSender = customerAccountService.getBalance(transferAmount.getAcctNo());
 				if (initBalSender >= transferAmount.getAmount()) {
-					CustomerAccount destCustomerAccount = customerAccountService.getCustomerAccountInfo(transferAmount.getDestAcctNo());
+					CustomerAccount destCustomerAccount = customerAccountService
+							.getCustomerAccountInfo(transferAmount.getDestAcctNo());
 					if (destCustomerAccount != null) {
-						// double initBalReceiver = customerAccountService.getBalance(destAcctNo);
 						if (transferAmount.getAmount() > 0) {
-							customerAccountService.transferAmount(transferAmount.getAcctNo(), transferAmount.getDestAcctNo(),
-									transferAmount.getAmount());
-							notificationService.sendNotificationToCustomer(customerAccount, transferAmount.getAmount());
-							notificationService.sendNotificationToCustomer(destCustomerAccount, transferAmount.getAmount());
-							ErrorDetails errorDetails = new ErrorDetails(new Date(), "Amount transferred successfully", "");
-							return new ResponseEntity<>(errorDetails, HttpStatus.OK);
+							response = true;
 						} else {
 							throw new InvalidAmountException(
 									"Amount to be transfer should be greator than 0 : " + transferAmount.getAmount());
@@ -141,5 +151,7 @@ public class CustomerAccountController {
 				throw new ResourceNotFoundException(
 						"Customer account number does not exist : " + transferAmount.getAcctNo());
 			}
+			return response;
 		}
+		
 }

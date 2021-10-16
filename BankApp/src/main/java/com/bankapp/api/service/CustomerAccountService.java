@@ -1,6 +1,6 @@
 package com.bankapp.api.service;
 
-import com.bankapp.api.model.CustomerAccount;
+import com.bankapp.api.Entity.CustomerAccount;
 
 public interface CustomerAccountService {
 	

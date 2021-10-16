@@ -12,9 +12,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.bankapp.api.Entity.CustomerAccount;
 import com.bankapp.api.dao.AccountTransactionDAO;
 import com.bankapp.api.dao.CustomerAccountDAO;
-import com.bankapp.api.model.CustomerAccount;
 import com.bankapp.api.service.CustomerAccountService;
 
 @SpringBootTest

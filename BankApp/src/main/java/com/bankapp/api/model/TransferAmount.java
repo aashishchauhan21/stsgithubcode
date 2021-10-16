@@ -7,8 +7,10 @@ import javax.validation.constraints.NotNull;
 public class TransferAmount {
 
 	@NotEmpty(message = "Account Number can not be blank. Please specify Account Number.")
+	@NotNull(message = "Account Number can not be blank. Please specify Account Number.")
 	private String acctNo;
 	@NotEmpty(message = "Destination Account Number can not be blank. Please specify Destination Account Number.")
+	@NotNull(message = "Destination Account Number can not be blank. Please specify Destination Account Number.")
 	private String destAcctNo;
 	@NotNull(message = "Amount to be transfer can not be blank. Please try with valid amount.")
 	@Min(value = 1, message = "Amount to be transfer should be greator than 0. Please try with valid amount.")
