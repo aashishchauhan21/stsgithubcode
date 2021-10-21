@@ -1,0 +1,49 @@
+## Instructions:
+- You can use below URI's to construct API requests using an app like Postman. Use Postman or similar app to construct and send requests as mentined below.
+
+POST - To create Account
+/v1/accounts
+{
+    "accountId": "Id-123",
+    "balance": "1500"
+}
+
+Response - created
+
+/v1/accounts
+{
+    "accountId": "Id-456",
+    "balance": "500"
+}
+
+Response - created
+
+GET - to get accounts details
+/v1/accounts/Id-101
+
+Response - 
+{
+    "accountId": "Id-123",
+    "balance": 1500
+}
+
+PUT - Transfer Amount in between Accounts
+/v1/accounts/transfer
+{
+    "srcAcctId": "Id-123",
+    "destAcctId": "Id-456",
+    "amount": "200"
+}
+
+Response : Amount transferred successfully
+
+## Steps to run the project and test API:
+- In order to run the API, Java should be installed.
+- Download the project and import as gradle project in any IDE e.g. STS, Eclipse
+- Run the project as Spring Boot Project
+- Download link for Postman -> https://www.getpostman.com/downloads/
+- Open Postman and send requests as per URL mentioned above.
+
+##### NOTE: This is a gradle project. So there is no need to download external .jars
+
+### Tech Stack: Spring Boot, Java, Gradle, Spring Tool Suite/Eclipse, Postman
